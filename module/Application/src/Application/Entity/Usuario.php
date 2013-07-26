@@ -21,3 +21,28 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
+class Usuario
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $username;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $password;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Rol", inversedBy="usuarios")
+     * @ORM\JoinTable(name="usuario_roles")
+     */
+    protected $roles;
+}
