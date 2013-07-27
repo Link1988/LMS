@@ -25,7 +25,6 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 
-
     }
 
     public function signinAction(){

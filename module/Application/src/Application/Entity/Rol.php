@@ -37,7 +37,7 @@ class Rol
 
     /**
      * @ORM\OneToOne(targetEntity="Rol")
-     * @ORM\JoinColumn(name="rol_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="parent", referencedColumnName="id")
      */
     protected $parent;
 
