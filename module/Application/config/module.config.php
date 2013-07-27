@@ -20,6 +20,43 @@ return array(
                     ),
                 ),
             ),
+            'exitoso' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/creado',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'crear',
+                    ),
+                ),
+            ),
+            'login' => array(
+                'type'    => 'Literal',
+                'options' => array(
+                    'route'    => '/login',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Index',
+                        'action'        => 'signin',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'process' => array(
+                        'type'    => 'Segment',
+                        'options' => array(
+                            'route'    => '/[:controller[/:action]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -36,7 +73,7 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'default' => array(
+                    'actions' => array(
                         'type'    => 'Segment',
                         'options' => array(
                             'route'    => '/[:controller[/:action]]',
