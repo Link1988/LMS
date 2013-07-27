@@ -12,6 +12,7 @@ use Application\Entity\Role;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Session\Container;
 
+
 /**
  * Clase entidad de Usuario
  *
@@ -44,12 +45,14 @@ class Usuario
     protected $password;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Rol", inversedBy="usuarios")
+     * @ORM\ManyToMany(targetEntity="Application\Entity\Rol", inversedBy="usuarios", fetch="EAGER")
      * @ORM\JoinTable(name="usuario_roles")
      */
     protected $roles;
 
     protected $logedUser;
+
+    protected $serviceLocator;
 
     public function getId()
     {
@@ -90,6 +93,7 @@ class Usuario
 
     public function register() {
         $sesion = new Container('usuario');
+        $this->getRoles();
         $sesion->offsetSet('usuario',$this);
     }
 
@@ -111,6 +115,17 @@ class Usuario
             $sesion->offsetSet('usuario',false);
         }
     }
+
+
+
+
+    /**
+     * @todo Implementar el entity manager
+     * @todo Crear las relaciones entre los usuarios y controladores
+     * @todo Crear las relaciones entre los usuarios y las acciones
+     * @todo Crear la funcionalidad para revisar si un usuario tiene acceso a un controlador
+     * @todo Crear la funcionalidad para revisar si un usuario tiene acceso a una accion de un controlador
+     */
 
 
 }

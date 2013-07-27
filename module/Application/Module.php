@@ -12,6 +12,7 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Application\Entity\Usuario;
+use Application\Entity\AccessControl;
 use Zend\Mvc\Router\Http\RouteMatch;
 
 class Module
@@ -19,30 +20,23 @@ class Module
     public function onBootstrap(MvcEvent $e)
     {
         $app                 = $e->getApplication();
+
         $em                  = $app->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($em);
 
-
-
         $em->attach(MvcEvent::EVENT_ROUTE, function($e) use ($app) {
+            $sm = $e->getApplication()->getServiceManager();
             $match = $e->getRouteMatch();
-
-
 
             // No route match, this is a 404
             if (!$match instanceof RouteMatch) {
                 return;
             }
 
-
-
-
-
             // Route is login
             $name = $match->getMatchedRouteName();
-
-
+            $params = $match->getParams();
 
             if ($name == 'login' || $name == 'login/process') {
                 return;
@@ -54,14 +48,26 @@ class Module
             $usuario = Usuario::getRegistered();
             if ($usuario) {
 
-                $viewModel->setVariables(array(
-                    'appName'=> $name,
-                    'params' => 'test',
-                ));
-                return;
+                $ACL = new AccessControl();
+                $acceso = $ACL->validateAccess($usuario, $params['controller'], $params['action'], $sm);
+                if($acceso) {
+                    $viewModel->setVariables(array(
+                        'appName'=> $name,
+                        'params' => $params,
+                    ));
+                    return;
+                }
+                else {
+                    $router   = $e->getRouter();
+                    $response = $e->getResponse();
+                    $url      = $router->assemble(array(), array(
+                        'name' => 'home'
+                    ));
+                    $response->getHeaders()->addHeaderLine('Location', $url);
+                    $response->setStatusCode(302);
+                    return $response;
+                }
             }
-
-            $controller = $e->getTarget();
 
             // Redirect to the user login page, as an example
             $router   = $e->getRouter();
@@ -73,7 +79,7 @@ class Module
             $response->getHeaders()->addHeaderLine('Location', $url);
             $response->setStatusCode(302);
 
-            return $response;
+            return ;
 
         }, -100);
 
@@ -81,11 +87,12 @@ class Module
         $sharedEvents->attach(__NAMESPACE__, 'dispatch', function($e) {
             $match = $e->getRouteMatch();
             $name = $match->getMatchedRouteName();
+
             if ($name == 'login' || $name == 'login/process') {
                 $controller = $e->getTarget();
                 $controller->layout('layout/layout_login');
             }
-            // This event will only be fired when an ActionController under the MyModule namespace is dispatched.
+
 
         }, 100);
     }
