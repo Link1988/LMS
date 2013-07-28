@@ -1,0 +1,27 @@
+#Login {
+    width: 170px;
+    margin: 0px auto;
+    text-align: center;
+
+}
+
+#usuarioForm input {
+    margin: 9px auto;
+}
+
+html {
+    color: #FFFFFF;
+    background-color: #666666;
+}
+#Intro {
+    margin: 50px auto;
+    text-align: center;
+    width: 220px;
+}
+
+#usuarioForm > input {
+    background-color: #444444;
+    border: 0 none;
+    box-shadow: 3px 3px 2px #888888;
+    color: #BBBBBB;
+}

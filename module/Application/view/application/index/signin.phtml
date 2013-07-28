@@ -1,3 +1,18 @@
+<div id="Intro">
+    <span>
+        <h3>
+            Bienvenido al nuevo LMS!
+        </h3>
+    </span>
+    <span>
+        <p>
+            Esta es la entrada al nuevo LMS (Learning Managment Software) producido por la comunidad
+            para la comunidad.
+        </p>
+    </span>
+</div>
+
+<div id="Login">
 <?php
 echo $this->layout()->getVariable('appName');
 
@@ -18,3 +33,5 @@ $form->prepare();
 echo $this->form()->openTag($form);
 echo $this->formCollection($form);
 echo $this->form()->closeTag();
+?>
+</div>
