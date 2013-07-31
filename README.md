@@ -24,6 +24,8 @@ Clona el repositorio a tu computadora local y ejecuta composer:
     php composer.phar self-update
     php composer.phar install
 
+Crea la base de datos Utilizando el archivo /data/database/lms.sql
+
 Virtual Host
 ------------
 Es necesario crear un host virtual en apache que apunte a la carpeta public
